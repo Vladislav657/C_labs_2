@@ -1,27 +1,33 @@
 #include "dict.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 
 int main(void){
-    dict *a = createDict();
+    dict *dictionary = createDict(4);
 
-    add(a, "b", 2);
+    int *arr = (int *) malloc(5 * sizeof(int));
 
-    add(a, "d", 4);
-    add(a, "f", 5);
-    add(a, "c", 5);
-    add(a, "a", 1);
+    for (int i = 0; i < 5; ++i) {
+        arr[i] = 1;
+    }
 
-//    delByKey(a, "f");
-//    delByKey(a, "a");
+    keyValue *kv1 = createKeyValue("a", 0, 0, NULL, arr, NULL, 4);
+    kv1->intLen = 5;
+    add(dictionary, kv1);
+    delByKey(dictionary, "a");
 
-    add(a, "c", 4);
-//    add(a, "c", 6);
+    int *arr2 = (int *) malloc(5 * sizeof(int));
+    for (int i = 0; i < 5; ++i) {
+        arr2[i] = 2;
+    }
+    keyValue *kv2 = createKeyValue("b", 0, 0, NULL, arr2, NULL, 4);
+    kv2->intLen = 5;
 
-    keyValue *b = getByKey(a, "d");
+    add(dictionary, kv2);
+    add(dictionary, kv1);
 
-    printDict(a);
-
-    delDict(a);
+    printDict(dictionary);
 
     return 0;
 }
