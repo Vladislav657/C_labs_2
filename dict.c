@@ -4,63 +4,26 @@
 #include <string.h>
 
 
-keyValue *createKeyValue(char *key, int intValue, double floatValue, char *stringValue,
-                         int *intArrValue, double *floatArrValue, int valueType){
+keyValue *createKeyValue(char *key, void *value, int valueType){
     // 1 : int, 2 : float, 3 : string, 4, int array, 5 : float array
     keyValue *key_value = malloc(sizeof(keyValue));
     key_value->valueType = valueType;
     key_value->key = key;
-    switch (valueType) {
-        case 1:
-            key_value->intValue = intValue;
-            break;
-        case 2:
-            key_value->floatValue = floatValue;
-            break;
-        case 3:
-            key_value->stringValue = stringValue;
-            break;
-        case 4:
-            key_value->intArrValue = intArrValue;
-            break;
-        case 5:
-            key_value->floatArrValue = floatArrValue;
-            break;
-        default:
-            key_value->valueType = 0;
-    }
+    key_value->value = value;
     return key_value;
 }
 
 
 void delKeyValue(keyValue *key_value){
-    free(key_value->intArrValue);
-    free(key_value->floatArrValue);
+    free(key_value->value);
     free(key_value);
 }
 
 
 keyValue *copyKeyValue(keyValue *key_value){
     keyValue *key_value_copy = malloc(sizeof(keyValue));
-    key_value_copy->valueType = key_value->valueType;
+    key_value_copy->value = key_value->value;
     key_value_copy->key = key_value->key;
-    switch (key_value->valueType) {
-        case 1:
-            key_value_copy->intValue = key_value->intValue;
-            break;
-        case 2:
-            key_value_copy->floatValue = key_value->floatValue;
-            break;
-        case 3:
-            key_value_copy->stringValue = key_value->stringValue;
-            break;
-        case 4:
-            key_value_copy->intArrValue = key_value->intArrValue;
-            break;
-        case 5:
-            key_value_copy->floatArrValue = key_value->floatArrValue;
-            break;
-    }
     return key_value_copy;
 }
 
@@ -75,31 +38,33 @@ void printKeyValue(keyValue *key_value){
     printf("%s: ", key_value->key);
     switch (key_value->valueType) {
         case 1:
-            printf("%d", key_value->intValue);
+            printf("%d", *(int *)key_value->value);
             break;
         case 2:
-            printf("%lf", key_value->floatValue);
+            printf("%lf", *(double *)key_value->value);
             break;
         case 3:
-            printf("%s", key_value->stringValue);
+            printf("%s", (char *)key_value->value);
             break;
         case 4:
             printf("[");
-            for (int i = 0; i < key_value->intLen; ++i) {
-                if (i == 0)
-                    printf("%d", key_value->intArrValue[i]);
+            int *arrInt = (int *) key_value->value;
+            for (int i = 1; i < arrInt[0] + 1; ++i) {
+                if (i == 1)
+                    printf("%d", arrInt[i]);
                 else
-                    printf(", %d", key_value->intArrValue[i]);
+                    printf(", %d", arrInt[i]);
             }
             printf("]");
             break;
         case 5:
             printf("[");
-            for (int i = 0; i < key_value->floatLen; ++i) {
-                if (i == 0)
-                    printf("%lf", key_value->floatArrValue[i]);
+            double *arrFloat = (double *) key_value->value;
+            for (int i = 1; i < (int)arrFloat[i] + 1; ++i) {
+                if (i == 1)
+                    printf("%lf", arrFloat[i]);
                 else
-                    printf(", %lf", key_value->floatArrValue[i]);
+                    printf(", %lf", arrFloat[i]);
             }
             printf("]");
             break;
@@ -117,15 +82,14 @@ dict *createDict(int valueType){
 }
 
 
-void add(dict* d, keyValue *key_value){
-    if (key_value->valueType != d->valueType) return;
-
+void add(dict* d, char *key, void *value){
+    keyValue *key_value = createKeyValue(key, value, d->valueType);
     int index = 0;
     for (int i = 0; i < d->len; ++i) {
-        if (strcmp(d->dict_list[i].key, key_value->key) == 0){
-            d->dict_list[i] = *key_value;
+        if (strcmp(d->dict_list[i].key, key) == 0){
+            d->dict_list[i].value = value;
             return;
-        } else if (strcmp(d->dict_list[i].key, key_value->key) < 0)
+        } else if (strcmp(d->dict_list[i].key, key) < 0)
             index++;
     }
 

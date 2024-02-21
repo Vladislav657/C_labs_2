@@ -4,30 +4,44 @@
 
 
 int main(void){
-    dict *dictionary = createDict(4);
+    dict *dictionary = createDict(3);
 
-    int *arr = (int *) malloc(5 * sizeof(int));
+//    int *a1 = (int *) malloc(6 * sizeof(int));
+//    int *a2 = (int *) malloc(6 * sizeof(int));
+//    int *a3 = (int *) malloc(3 * sizeof(int));
+//    int *a4 = (int *) malloc(6 * sizeof(int));
+//    int *a5 = (int *) malloc(6 * sizeof(int));
+//
+//
+//    a1[0] = 5;
+//    a2[0] = 5;
+//    a3[0] = 2;
+//    a4[0] = 5;
+//    a5[0] = 5;
+//    for (int i = 1; i < 6; ++i) {
+//        a1[i] = 2;
+//        a2[i] = 3;
+//        a3[i] = 10;
+//        a4[i] = 5;
+//        a5[i] = 9;
+//    }
 
-    for (int i = 0; i < 5; ++i) {
-        arr[i] = 1;
-    }
+    char *a = "fsf";
+    char *b = "fsbdsbf";
+    char *d = "frwsf";
+    char *c = "fswrwwwwwf";
+    char *f = "fsrrrrrrrrrrrrrf";
 
-    keyValue *kv1 = createKeyValue("a", 0, 0, NULL, arr, NULL, 4);
-    kv1->intLen = 5;
-    add(dictionary, kv1);
-    delByKey(dictionary, "a");
-
-    int *arr2 = (int *) malloc(5 * sizeof(int));
-    for (int i = 0; i < 5; ++i) {
-        arr2[i] = 2;
-    }
-    keyValue *kv2 = createKeyValue("b", 0, 0, NULL, arr2, NULL, 4);
-    kv2->intLen = 5;
-
-    add(dictionary, kv2);
-    add(dictionary, kv1);
+    add(dictionary, "a", a);
+    add(dictionary, "c", b);
+    add(dictionary, "b", c);
+    add(dictionary, "f", d);
+    add(dictionary, "d", f);
+    delByKey(dictionary, "c");
 
     printDict(dictionary);
+
+    delDict(dictionary);
 
     return 0;
 }

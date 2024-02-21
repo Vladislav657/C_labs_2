@@ -4,21 +4,13 @@
 
 
 typedef struct {
-    int valueType;
+    int valueType; // 1 : int, 2 : float, 3 : string, 4, int array, 5 : float array
     char *key;
-
-    int intValue;
-    double floatValue;
-    char *stringValue;
-    int *intArrValue;
-    double *floatArrValue;
-
-    int intLen;
-    int floatLen;
+    void *value;
 } keyValue;
 
 
-keyValue *createKeyValue(char *, int, double, char *, int *, double *, int);
+keyValue *createKeyValue(char *, void *, int);
 
 
 void delKeyValue(keyValue *);
@@ -34,7 +26,7 @@ void printKeyValue(keyValue *);
 
 
 typedef struct{
-    int valueType;
+    int valueType; // 1 : int, 2 : float, 3 : string, 4, int array, 5 : float array
     int len;
     keyValue *dict_list;
 } dict;
@@ -46,7 +38,7 @@ dict *createDict(int);
 void delDict(dict *);
 
 
-void add(dict*, keyValue *);
+void add(dict*, char *, void *);
 
 
 void delByKey(dict*, char *);
