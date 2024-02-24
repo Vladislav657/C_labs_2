@@ -26,19 +26,18 @@ void printKeyValue(keyValue *);
 
 
 typedef struct{
-    int valueType; // 1 : int, 2 : float, 3 : string, 4, int array, 5 : float array
     int len;
-    keyValue *dict_list;
+    keyValue **dict_list;
 } dict;
 
 
-dict *createDict(int);
+dict *createDict();
 
 
 void delDict(dict *);
 
 
-void add(dict*, char *, void *);
+void add(dict*, char *, void *, int);
 
 
 void delByKey(dict*, char *);
